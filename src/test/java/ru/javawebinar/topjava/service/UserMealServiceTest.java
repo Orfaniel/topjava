@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,6 +29,9 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class UserMealServiceTest {
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Autowired
     protected UserMealService service;
 
@@ -38,6 +43,7 @@ public class UserMealServiceTest {
 
     @Test(expected = NotFoundException.class)
     public void testDeleteNotFound() throws Exception {
+        exception.expect(NotFoundException.class);
         service.delete(MEAL1_ID, 1);
     }
 
@@ -69,6 +75,8 @@ public class UserMealServiceTest {
     @Test(expected = NotFoundException.class)
     public void testNotFoundUpdate() throws Exception {
         UserMeal item = service.get(MEAL1_ID, USER_ID);
+        exception.expect(NotFoundException.class);
+        exception.expectMessage("Not found with id=" + MEAL1_ID);
         service.update(item, ADMIN_ID);
     }
 
