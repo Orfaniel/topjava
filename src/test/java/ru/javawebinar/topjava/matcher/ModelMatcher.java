@@ -39,6 +39,14 @@ public class ModelMatcher<T, R> {
         return JsonUtil.readValues(json, entityClass);
     }
 
+    private T fromJsonValue(String json) {
+        return JsonUtil.readValue(json, entityClass);
+    }
+
+    private Collection<T> fromJsonValues(String json) {
+        return JsonUtil.readValues(json, entityClass);
+    }
+
     public void assertEquals(T expected, T actual) {
         Assert.assertEquals(entityConverter.apply(expected), entityConverter.apply(actual));
     }
